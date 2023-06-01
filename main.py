@@ -18,7 +18,6 @@ with open('mainConfig.json') as f:
 
 # client.remove_command("help")
 
-
 @client.command()
 @commands.is_owner()
 async def load(ctx, extension):

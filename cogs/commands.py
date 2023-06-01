@@ -16,16 +16,15 @@ class Commands(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        await self.client.change_presence(status=discord.Status.do_not_disturb,activity=discord.Game('with my step bro'))
+        await self.client.change_presence(status=discord.Status.do_not_disturb,
+                                          activity=discord.Game('with my step bro'))
         print('Bot is ready.')
-
 
     @commands.command()
     async def helps(self, ctx):
         embed = discord.Embed(
             title="Step Sis Command List",
             # description="HI",
-
         )
         print('test.')
         embed.add_field(name=":musical_note: Music", value="`.helpMusic`", inline=True)
