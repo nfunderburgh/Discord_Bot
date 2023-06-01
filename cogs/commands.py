@@ -21,7 +21,7 @@ class Commands(commands.Cog):
         print('Bot is ready.')
 
     @commands.command()
-    async def helps(self, ctx):
+    async def help(self, ctx):
         embed = discord.Embed(
             title="Step Sis Command List",
             # description="HI",
@@ -39,26 +39,10 @@ class Commands(commands.Cog):
     async def helpUtility(self, ctx):
         embed = discord.Embed(
             title=":tools: Utility Commands",
-            description="`ping`,`8ball`",
+            description="`8ball`,`ping`,`troll`",
             colour=discord.Colour.greyple()
         )
         await ctx.send(embed=embed)
-
-    @commands.command()
-    async def ping(self, ctx):
-        await ctx.send(f'Your ping is {round(self.client.latency * 1000)}ms')
-
-    @commands.command()
-    @commands.has_permissions(manage_messages=True)
-    async def help_me(self, ctx, user, amount=1):
-        if amount != 1:
-            await ctx.send('Sorry that is invalid')
-        responses = [f'Yo step bro can you help me {user} ?',
-                     f'Help step bro Im stuck {user}!',
-                     f'I need some help in the bathroom step bro {user}!',
-                     f'What are you doing step bro {user}?']
-        await ctx.channel.purge(limit=amount)
-        await ctx.send(random.choice(responses))
 
     @commands.command(aliases=['8ball'])
     async def _8ball(self, ctx, *, question):
@@ -83,6 +67,21 @@ class Commands(commands.Cog):
                      "Outlook not so good.",
                      "Very doubtful."]
         await ctx.send(f'Question: {question}\nAnswer: {random.choice(responses)}')
+
+    @commands.command()
+    async def ping(self, ctx):
+        await ctx.send(f'Your ping is {round(self.client.latency * 1000)}ms')
+
+    @commands.command()
+    async def troll(self, ctx, user, amount=1):
+        if amount != 1:
+            await ctx.send('Sorry that is invalid')
+        responses = [f'Yo step bro can you help me {user} ?',
+                     f'Help step bro Im stuck {user}!',
+                     f'I need some help in the bathroom step bro {user}!',
+                     f'What are you doing step bro {user}?']
+        await ctx.channel.purge(limit=amount)
+        await ctx.send(random.choice(responses))
 
 
 async def setup(client):
