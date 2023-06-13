@@ -14,12 +14,20 @@ class Commands(commands.Cog):
     def __init__(self, client):
         self.client = client
 
+    # Listens for when the bot starts, the bots status to do no disturb
+    # and it also prints a message to the console when the bot is running
+    #
+    # param: self, represents an instance of the class
     @commands.Cog.listener()
     async def on_ready(self):
         await self.client.change_presence(status=discord.Status.do_not_disturb,
                                           activity=discord.Game('with my step bro'))
         print('Bot is ready.')
 
+    # Custom help message replacing the ugly regular one
+    #
+    # param: self, represents an instance of the class
+    # param: ctx, represents the context in which a command is being invoked under
     @commands.command()
     async def help(self, ctx):
         embed = discord.Embed(
@@ -35,6 +43,10 @@ class Commands(commands.Cog):
         embed.add_field(name=":video_game: RPG", value="`.helpRPG`", inline=True)
         await ctx.send(embed=embed)
 
+    # Custom help message for this class so there isn't a long list of commands
+    #
+    # param: self, represents an instance of the class
+    # param: ctx, represents the context in which a command is being invoked under
     @commands.command(aliases=['helputility'])
     async def helpUtility(self, ctx):
         embed = discord.Embed(
@@ -44,6 +56,12 @@ class Commands(commands.Cog):
         )
         await ctx.send(embed=embed)
 
+    # User can ask the bot a question and the bot will provide a random answer
+    #
+    # param: self, represents an instance of the class
+    # param: ctx, represents the context in which a command is being invoked under
+    # param: *. used to get all the text after .8ball command
+    # param: question, the question the user is asking
     @commands.command(aliases=['8ball'])
     async def _8ball(self, ctx, *, question):
         responses = ["It is certain.",
@@ -68,10 +86,19 @@ class Commands(commands.Cog):
                      "Very doubtful."]
         await ctx.send(f'Question: {question}\nAnswer: {random.choice(responses)}')
 
+    # Used to test your latency to discord servers
+    #
+    # param: self, represents an instance of the class
+    # param: ctx, represents the context in which a command is being invoked under
     @commands.command()
     async def ping(self, ctx):
         await ctx.send(f'Your ping is {round(self.client.latency * 1000)}ms')
 
+    # trolls a specific discord user with a message posted by the bot
+    #
+    # param: self, represents an instance of the class
+    # param: ctx, represents the context in which a command is being invoked under
+    # param: user, the specific user to troll, Ex: @crazybob123
     @commands.command()
     async def troll(self, ctx, user, amount=1):
         if amount != 1:
