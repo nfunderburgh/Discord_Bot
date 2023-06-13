@@ -4,7 +4,7 @@ import json
 from discord.ext import commands
 
 # Author: Noah Funderburgh
-# Date: 10/9/2020
+# Date: 10/8/2020
 # Description: Allows for Cogs be loaded, unloaded and reloaded
 # so the program doesn't have to be restarted upon changes made
 # Todo: No current plans to add anything to main.py

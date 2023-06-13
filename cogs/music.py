@@ -19,8 +19,6 @@ class Music(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    repeat = False;
-
     @commands.command(pass_contex=True, aliases=['helpmusic'])
     async def helpMusic(self, ctx):
         embed = discord.Embed(
@@ -120,15 +118,13 @@ class Music(commands.Cog):
                 name = file
                 print(f"Renamed File: {file}\n")
                 os.rename(file, "song.mp3")
-        timesPlayed = 1
-        while self.repeat == True or timesPlayed == 1:
-            voice.play(discord.FFmpegPCMAudio("song.mp3"), after=lambda e: check_queue())
-            voice.source = discord.PCMVolumeTransformer(voice.source)
-            voice.source.volume = 0.07
-            nname = name.rsplit("-", 2)
-            await ctx.send(f"Playing: {nname[0]}")
-            print("playing\n")
-            timesPlayed = timesPlayed + 1
+
+        voice.play(discord.FFmpegPCMAudio("song.mp3"), after=lambda e: check_queue())
+        voice.source = discord.PCMVolumeTransformer(voice.source)
+        voice.source.volume = 0.07
+        nname = name.rsplit("-", 2)
+        await ctx.send(f"Playing: {nname[0]}")
+        print("playing\n")
 
     @commands.command(pass_context=True, aliases=['pa', 'pau'])
     async def pause(self, ctx):
@@ -209,11 +205,6 @@ class Music(commands.Cog):
     @commands.command(pass_contex=True)
     async def leave(self, ctx):
         await ctx.voice_client.disconnect()
-
-    @commands.command(pass_contex=True)
-    async def repeat(self, ctx):
-        self.repeat = True
-        print(self.repeat)
 
 
 async def setup(client):
