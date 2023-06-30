@@ -75,6 +75,12 @@ class Admin(commands.Cog):
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send("Please specify an amount of messages to delete.")
 
+    @commands.command()
+    async def voiceKick(self, ctx, member: discord.Member):
+        await ctx.send('Kicking ' + str(member))
+        await member.move_to(None)
+        await ctx.channel.purge(limit=2)
+
 
 async def setup(client):
     await client.add_cog(Admin(client))

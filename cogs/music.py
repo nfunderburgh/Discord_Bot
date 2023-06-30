@@ -19,6 +19,10 @@ class Music(commands.Cog):
     def __init__(self, client):
         self.client = client
 
+    # Custom help message for the music class so there isn't a long list of commands
+    #
+    # param: self, represents an instance of the class
+    # param: ctx, represents the context in which a command is being invoked under
     @commands.command(pass_contex=True, aliases=['helpmusic'])
     async def helpMusic(self, ctx):
         embed = discord.Embed(
@@ -28,11 +32,23 @@ class Music(commands.Cog):
         )
         await ctx.send(embed=embed)
 
+    # Connected the bot to the current voice channel the user is in
+    # TODO: check if user is in a valid voice channel else return error message
+    #
+    # param: self, represents an instance of the class
+    # param: ctx, represents the context in which a command is being invoked under
     @commands.command(pass_context=True)
     async def join(self, ctx):
         channel = ctx.author.voice.channel
         await channel.connect()
 
+    # Downloads the provided mp3 of song and plays it if there are no songs in the current queue
+    # TODO: enable a repeat feature so songs can be plays continously until repeat is turned off
+    #
+    # param: self, represents an instance of the class
+    # param: ctx, represents the context in which a command is being invoked under
+    # param: url, represents a url for where the song can be found valid url consist of youtube, soundcloud and spotify
+    # urls to a song.
     @commands.command(pass_context=True, aliases=['p', 'pla'])
     async def play(self, ctx, url: str):
 
@@ -66,11 +82,9 @@ class Music(commands.Cog):
                     voice.play(discord.FFmpegPCMAudio("song.mp3"), after=lambda e: check_queue())
                     voice.source = discord.PCMVolumeTransformer(voice.source)
                     voice.source.volume = 0.07
-
                 else:
                     queues.clear()
                     return
-
             else:
                 queues.clear()
                 print("No songs were queued before the ending of the last song\n")
@@ -126,6 +140,10 @@ class Music(commands.Cog):
         await ctx.send(f"Playing: {nname[0]}")
         print("playing\n")
 
+    # Pauses the music currently playing within the voice channel
+    #
+    # param: self, represents an instance of the class
+    # param: ctx, represents the context in which a command is being invoked under
     @commands.command(pass_context=True, aliases=['pa', 'pau'])
     async def pause(self, ctx):
 
@@ -139,6 +157,10 @@ class Music(commands.Cog):
             print("Music not playing failed pause")
             await ctx.send("Music not playing failed pause")
 
+    # Resumes music that was paused, if no music was paused it will print out an error message
+    #
+    # param: self, represents an instance of the class
+    # param: ctx, represents the context in which a command is being invoked under
     @commands.command(pass_context=True, aliases=['r', 'res'])
     async def resume(self, ctx):
 
@@ -152,6 +174,10 @@ class Music(commands.Cog):
             print("Music is not paused")
             await ctx.send("Music is not paused")
 
+    # Skips the current song playing
+    #
+    # param: self, represents an instance of the class
+    # param: ctx, represents the context in which a command is being invoked under
     @commands.command(pass_context=True, aliases=['s', 'sto', 'skip'])
     async def stop(self, ctx):
         voice = get(self.client.voice_clients, guild=ctx.guild)
