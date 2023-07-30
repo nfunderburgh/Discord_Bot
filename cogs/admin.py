@@ -8,6 +8,11 @@ class Admin(commands.Cog):
     def __init__(self, client):
         self.client = client
 
+    # Custom help message for the admin class so there isn't a long list of commands
+    # Verifies the user has admin permissions to use command
+    #
+    # param: self, represents an instance of the class
+    # param: ctx, represents the context in which a command is being invoked under
     @commands.command(aliases=['helpadmin'])
     @commands.has_permissions(administrator=True)
     async def helpAdmin(self, ctx):
@@ -18,6 +23,13 @@ class Admin(commands.Cog):
         )
         await ctx.send(embed=embed)
 
+    # Kicks the user from the server
+    # Verifies the user has kicking permissions to use command
+    #
+    # param: self, represents an instance of the class
+    # param: ctx, represents the context in which a command is being invoked under
+    # param: member, the member to kick from the server
+    # param: reason, the reason why the member was kick if nothing is type there will be none
     @commands.command(pass_context=True)
     @commands.has_permissions(kick_members=True)
     async def kick(self, ctx, member: discord.Member, *, reason=None):
@@ -75,6 +87,13 @@ class Admin(commands.Cog):
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send("Please specify an amount of messages to delete.")
 
+    # Kicks the user from the voice char
+    # Verifies the user has kicking permissions to use command
+    #
+    # param: self, represents an instance of the class
+    # param: ctx, represents the context in which a command is being invoked under
+    # param: member, the member to kick from the voice chat
+    @commands.has_permissions(kick_members=True)
     @commands.command()
     async def voiceKick(self, ctx, member: discord.Member):
         await ctx.send('Kicking ' + str(member))
