@@ -2,6 +2,8 @@ import os
 import discord
 import json
 from discord.ext import commands
+import services.Security
+
 
 # Author: Noah Funderburgh
 # Date: 10/8/2020
@@ -15,7 +17,7 @@ intents.message_content = True
 client = commands.Bot(command_prefix='.', intents=intents)
 with open('mainConfig.json') as f:
     data = json.load(f)
-    TOKEN = data["TOKEN"]
+    token = data["token"]
 
 client.remove_command("help")
 
@@ -75,11 +77,13 @@ async def on_command_error(ctx, error):
 # Loads the extensions in the cogs folder ending in .py upon startup
 # Prints loaded cogs into console for debugging
 @client.event
-async def setup_hook():
+async def setup_hook(self=None):
+    await services.Security.Security.findAll(self)
     for filename in os.listdir('./cogs'):
         if filename.endswith('.py'):
             await client.load_extension(f'cogs.{filename[:-3]}')
             print(f"Loaded Cog: {filename[:-3]}")
 
 
-client.run(TOKEN)
+
+client.run(token)
