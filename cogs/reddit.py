@@ -1,5 +1,4 @@
 import json
-
 import asyncpraw
 import praw
 import random
