@@ -19,12 +19,16 @@ class Music(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    # Custom help message for the music class so there isn't a long list of commands
-    #
-    # param: self, represents an instance of the class
-    # param: ctx, represents the context in which a command is being invoked under
+
     @commands.command(pass_contex=True, aliases=['helpmusic'])
     async def helpMusic(self, ctx):
+        """
+        The `helpMusic` function sends an embedded message containing a list of music commands to the Discord channel.
+
+        :param ctx: The `ctx` parameter is the context object that contains information about the command invocation. It
+        includes attributes such as the message, the channel, the author, and more. It is used to interact with the Discord
+        API and send messages, embeds, etc
+        """
         embed = discord.Embed(
             title=":musical_note: Music Commands",
             description="`join`,`play`,`pause`,`resume`,`stop`,`queue`,`leave`",
@@ -32,26 +36,31 @@ class Music(commands.Cog):
         )
         await ctx.send(embed=embed)
 
-    # Connected the bot to the current voice channel the user is in
-    # TODO: check if user is in a valid voice channel else return error message
-    #
-    # param: self, represents an instance of the class
-    # param: ctx, represents the context in which a command is being invoked under
+
     @commands.command(pass_context=True)
     async def join(self, ctx):
+        """
+        The `join` function allows the bot to join the voice channel of the user who invoked the command.
+
+        :param ctx: ctx is short for "context" and it represents the context in which the command is being executed. It
+        contains information about the message, the author, the server, and other relevant details
+        """
         channel = ctx.author.voice.channel
         await channel.connect()
 
-    # Downloads the provided mp3 of song and plays it if there are no songs in the current queue
-    # TODO: enable a repeat feature so songs can be plays continously until repeat is turned off
-    #
-    # param: self, represents an instance of the class
-    # param: ctx, represents the context in which a command is being invoked under
-    # param: url, represents a url for where the song can be found valid url consist of youtube, soundcloud and spotify
-    # urls to a song.
     @commands.command(pass_context=True, aliases=['p', 'pla'])
     async def play(self, ctx, url: str):
+        """
+        The `play` function in this Python code downloads and plays audio from a given URL, and also handles queuing of
+        songs.
 
+        :param ctx: The `ctx` parameter is the context object, which contains information about the command invocation such
+        as the message, the channel, the guild, and the author
+        :param url: The `url` parameter is a string that represents the URL of the audio or video that you want to play. It
+        is used to download the audio from the given URL and play it
+        :type url: str
+        :return: The function `play` does not have a return statement, so it does not explicitly return anything.
+        """
         global name
 
         def check_queue():
@@ -140,13 +149,14 @@ class Music(commands.Cog):
         await ctx.send(f"Playing: {nname[0]}")
         print("playing\n")
 
-    # Pauses the music currently playing within the voice channel
-    #
-    # param: self, represents an instance of the class
-    # param: ctx, represents the context in which a command is being invoked under
     @commands.command(pass_context=True, aliases=['pa', 'pau'])
     async def pause(self, ctx):
+        """
+        This function pauses the currently playing music in a voice channel.
 
+        :param ctx: ctx is the context object, which contains information about the command being invoked, such as the
+        message, the author, the guild, etc. It is passed as the first parameter to the command function
+        """
         voice = get(self.client.voice_clients, guild=ctx.guild)
 
         if voice and voice.is_playing():
@@ -157,13 +167,16 @@ class Music(commands.Cog):
             print("Music not playing failed pause")
             await ctx.send("Music not playing failed pause")
 
-    # Resumes music that was paused, if no music was paused it will print out an error message
-    #
-    # param: self, represents an instance of the class
-    # param: ctx, represents the context in which a command is being invoked under
     @commands.command(pass_context=True, aliases=['r', 'res'])
     async def resume(self, ctx):
+        """
+        The `resume` function resumes the paused music if it is currently paused, otherwise it sends a message indicating
+        that the music is not paused.
 
+        :param ctx: The `ctx` parameter is the context object, which contains information about the command invocation. It
+        includes attributes such as the message, the author, the channel, and the guild where the command was invoked. In
+        this case, `ctx.guild` is used to get the guild (server) where the
+        """
         voice = get(self.client.voice_clients, guild=ctx.guild)
 
         if voice and voice.is_paused():
@@ -174,12 +187,15 @@ class Music(commands.Cog):
             print("Music is not paused")
             await ctx.send("Music is not paused")
 
-    # Skips the current song playing
-    #
-    # param: self, represents an instance of the class
-    # param: ctx, represents the context in which a command is being invoked under
     @commands.command(pass_context=True, aliases=['s', 'sto', 'skip'])
     async def stop(self, ctx):
+        """
+        The `stop` function stops the currently playing music and clears the music queue.
+
+        :param ctx: The `ctx` parameter is the context object, which contains information about the command invocation such
+        as the message, the channel, the guild, and the author. It is passed automatically by the discord.py library when
+        the command is invoked
+        """
         voice = get(self.client.voice_clients, guild=ctx.guild)
 
         queues.clear()
@@ -194,6 +210,15 @@ class Music(commands.Cog):
 
     @commands.command(pass_context=True, aliases=['q', 'que'])
     async def queue(self, ctx, url: str):
+        """
+        The `queue` function downloads an audio file from a given URL and adds it to a queue.
+
+        :param ctx: ctx is the context object, which contains information about the command invocation such as the message,
+        the channel, the author, etc. It is used to interact with the Discord API and send messages, perform actions, etc
+        :param url: The `url` parameter is a string that represents the URL of the YouTube video that you want to add to the
+        queue
+        :type url: str
+        """
         Queue_infile = os.path.isdir("./Queue")
         if Queue_infile is False:
             os.mkdir("Queue")
@@ -230,6 +255,13 @@ class Music(commands.Cog):
 
     @commands.command(pass_contex=True)
     async def leave(self, ctx):
+        """
+        The above function is a command in a Python Discord bot that disconnects the bot from the voice channel it is
+        currently in.
+
+        :param ctx: ctx stands for "context" and it represents the context in which the command is being executed. It
+        contains information about the message, the channel, the server, and the user who triggered the command
+        """
         await ctx.voice_client.disconnect()
 
 

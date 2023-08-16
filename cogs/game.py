@@ -17,6 +17,14 @@ class Game(commands.Cog):
 
     @commands.command(aliases=['helpgame'])
     async def helpGame(self, ctx):
+        """
+        The `helpGame` function sends an embedded message to the Discord channel with a title and description of game
+        commands.
+
+        :param ctx: The `ctx` parameter stands for "context" and it represents the context in which the command is being
+        invoked. It contains information about the message, the channel, the server, and the user who triggered the command.
+        It is an instance of the `commands.Context` class from the discord.py library
+        """
         embed = discord.Embed(
             title=":game_die: Game Commands",
             description="`coinflip`,`fight`",
@@ -26,7 +34,16 @@ class Game(commands.Cog):
 
     @commands.command()
     async def fight(self, ctx, member: discord.Member):
+        """
+        The `fight` function allows two users to engage in a turn-based fight, with each user having the option to hit or
+        defend.
 
+        :param ctx: The `ctx` parameter is an object that represents the context of the command being executed. It contains
+        information such as the message, the channel, the author, and other relevant details
+        :param member: The `member` parameter in the `fight` command is a required parameter of type `discord.Member`. It
+        represents the member that the user wants to start a fight with
+        :type member: discord.Member
+        """
         await ctx.send(
             f'{ctx.author.mention} is trying to start a fight with you {member.mention} will you `accept` or `decline`?')
 
@@ -86,13 +103,36 @@ class Game(commands.Cog):
         except asyncio.TimeoutError:
             await ctx.send(f'{member.mention} has not responded.', delete_after=10)
 
+
     @commands.command()
     async def printHit(self, ctx, playerHit, playerGetHit, hit, hitpoints):
+        """
+        The function `printHit` sends a message to the context with information about a player hitting another player and
+        the remaining hitpoints.
+
+        :param ctx: The `ctx` parameter stands for "context" and represents the context in which the command is being
+        invoked. It contains information about the message, the channel, the server, and the user who triggered the command
+        :param playerHit: The player who performed the hit. It should be a mention of a user or a member object
+        :param playerGetHit: The parameter "playerGetHit" represents the player who is getting hit. It is expected to be a
+        mention of a user in the Discord server
+        :param hit: The "hit" parameter represents the amount of hitpoints that the player has hit for
+        :param hitpoints: The "hitpoints" parameter represents the remaining hitpoints of the player who got hit
+        """
         await ctx.send(
             f'{playerHit.mention} has hit for {hit} hitpoints and {playerGetHit.mention} has {hitpoints} hitpoints left')
 
     @commands.command()
     async def coinflip(self, ctx, headsOrTails):
+        """
+        This function allows a user to play a coin flip game by guessing heads or tails and receiving a message indicating
+        whether they won or lost.
+
+        :param ctx: ctx is the context object, which contains information about the command being invoked, such as the
+        message, the channel, the author, etc. It is used to send messages back to the user or the channel where the command
+        was invoked
+        :param headsOrTails: The `headsOrTails` parameter is a string that represents the user's choice of either "heads" or
+        "tails"
+        """
         coin = random.randint(0, 1)
         headsOrTails = headsOrTails.lower()
         if headsOrTails == 'tails':
